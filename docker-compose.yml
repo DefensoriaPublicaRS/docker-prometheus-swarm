@@ -5,7 +5,7 @@ networks:
 
 services:
   cadvisor:
-    image: google/cadvisor:${CADVISOR_VERSION:-v0.26.1}
+    image: google/cadvisor:${CADVISOR_VERSION:-v0.29}
     networks:
       - monitoring
     volumes:
@@ -102,7 +102,7 @@ services:
           memory: 128M
 
   grafana:
-    image: basi/grafana:${GRAFANA_VERSION:-4.4.3}
+    image: grafana/grafana:${GRAFANA_VERSION:-5.1.3}
     ports:
       - "3000:3000"
     networks:
