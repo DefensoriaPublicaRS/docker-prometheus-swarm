@@ -1,0 +1,41 @@
+version: '3'
+services:
+  #########
+  #
+  #     Para rodar a stack: TAG=6.2.4 ELASTIC_PASSWORD=ELASTIC_PASSWORD docker-compose up
+  #
+  #########
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${TAG:-6.2.4}
+    container_name: elasticsearch
+    network_mode: "host"
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - XPACK_MONITORING_ENABLED="false"
+    ports:
+      - 9200:9200
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${TAG:-6.2.4}
+    container_name: kibana
+    network_mode: "host"
+    ports:
+      - 5601:5601
+    environment:
+      - ELASTICSEARCH_USERNAME=kibana
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTICSEARCH_URL=http://localhost:9200
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:${TAG:-6.2.4}
+    container_name: logstash
+    volumes:
+      - ./logstash/logstash_config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./logstash/logs/:/logs/
+    network_mode: "host"
+    ports:
+      - 51415:51415
+    depends_on:
+      - elasticsearch
