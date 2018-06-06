@@ -5,7 +5,7 @@ networks:
 
 services:
   cadvisor:
-    image: google/cadvisor:${CADVISOR_VERSION:-v0.29}
+    image: google/cadvisor:${CADVISOR_VERSION:-v0.29.0}
     networks:
       - monitoring
     volumes:
